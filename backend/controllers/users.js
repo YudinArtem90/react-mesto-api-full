@@ -1,5 +1,6 @@
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
@@ -73,4 +74,39 @@ module.exports.updateAvatar = (req, res) => {
   )
     .then((user) => getData(res, user))
     .catch((err) => getError(res, { message: `Ошибка при изменении аватара, ${err}` }, err));
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+
+      return {
+        user,
+        matched: bcrypt.compare(password, user.password)
+      };
+    })
+    .then((user, matched) => {
+      if (!matched) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+
+      // add token
+      const token = jwt.sign(
+        { _id: user._id },
+        'some-secret-key',
+        { expiresIn: '7d' },
+      );
+
+      res.send({ message: token });
+    })
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: err.message });
+    });
 };
