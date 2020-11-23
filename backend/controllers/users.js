@@ -24,15 +24,11 @@ module.exports.addUser = (req, res) => {
   } = req.body;
 
   bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        name, about, avatar, email, hash,
-      })
-        .then((users) => getData(res, users))
-        .catch((err) => getError(res, { message: `Ошибка при создании пользователей, ${err}` }, err));
-    })
-    .then((user) => res.send(user))
-    .catch((err) => res.status(400).send(err));
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then((users) => getData(res, users))
+    .catch((err) => getError(res, { message: `Ошибка при создании пользователей, ${err}` }, err));
 };
 
 module.exports.updateProfile = (req, res) => {
