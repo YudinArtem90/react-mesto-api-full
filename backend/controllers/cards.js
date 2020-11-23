@@ -1,6 +1,7 @@
 const path = require('path');
 
 const Card = require('../models/card');
+const User = require('../models/user');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
@@ -13,10 +14,20 @@ module.exports.getCards = (req, res) => {
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
+  const { _id } = req.user;
 
-  Card.create({ name, link })
-    .then((card) => getData(res, card))
-    .catch((err) => getError(res, { message: `Ошибка при создании карточки, ${err}` }, err));
+  User.findById({ _id })
+    .then((user) => {
+      if (!user) {
+        res
+          .status(403)
+          .send({ message: 'Ошибка при создании карточки, пользователя не нашли в системе' });
+      }
+      Card.create({ name, link, owner: user })
+        .then((card) => getData(res, card))
+        .catch((err) => getError(res, { message: `Ошибка при создании карточки, ${err}` }, err));
+    })
+    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
 };
 
 module.exports.deleteCard = (req, res) => {
