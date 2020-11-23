@@ -1,4 +1,5 @@
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
@@ -18,11 +19,20 @@ module.exports.getUserId = (req, res) => {
 };
 
 module.exports.addUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
-  User.create({ name, about, avatar })
-    .then((users) => getData(res, users))
-    .catch((err) => getError(res, { message: `Ошибка при создании пользователей, ${err}` }, err));
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({
+        name, about, avatar, email, hash,
+      })
+        .then((users) => getData(res, users))
+        .catch((err) => getError(res, { message: `Ошибка при создании пользователей, ${err}` }, err));
+    })
+    .then((user) => res.send(user))
+    .catch((err) => res.status(400).send(err));
 };
 
 module.exports.updateProfile = (req, res) => {
