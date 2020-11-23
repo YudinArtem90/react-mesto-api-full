@@ -32,10 +32,17 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   const { cardId } = req.params;
+  const userId = req.user._id;
 
-  Card.findByIdAndRemove(cardId)
-    .then((card) => getData(res, card))
-    .catch((err) => getError(res, { message: `Ошибка при удалении карточки, ${err}` }, err));
+  Card.findOneAndDelete({
+    _id: cardId,
+    'owner.0': userId,
+  }, (err) => {
+    if (err) {
+      getError(res, { message: `Ошибка при удалении карточки, ${err}` }, err);
+    }
+    getData(res, { message: 'Карточка успешно удалена' });
+  });
 };
 
 module.exports.addLike = (req, res) => {
