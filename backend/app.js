@@ -33,14 +33,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5f52ad66592716debf3c07f8',
-  };
-
-  next();
-});
-
 app.use('/', routerUsers);
 
 // проверка пользователя на авторизацию (все что ниже, могут видеть только авторизованные)
