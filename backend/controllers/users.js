@@ -111,3 +111,11 @@ module.exports.login = (req, res) => {
         .send({ message: err.message });
     });
 };
+
+module.exports.getUserMe = (req, res) => {
+  const { _id } = req.user;
+
+  User.findOne({ _id })
+    .then((users) => getData(res, users))
+    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
+};
