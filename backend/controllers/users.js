@@ -79,24 +79,10 @@ module.exports.updateAvatar = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      if (!user) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
-      }
-
-      return {
-        user,
-        matched: bcrypt.compare(password, user.password),
-      };
-    })
-    // eslint-disable-next-line consistent-return
-    .then((user, matched) => {
-      if (!matched) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
-      }
-
-      // add token
+    // аутентификация успешна! пользователь в переменной user
+    // add token
       const token = jwt.sign(
         { _id: user._id },
         'some-secret-key',
@@ -106,6 +92,7 @@ module.exports.login = (req, res) => {
       res.send({ message: token });
     })
     .catch((err) => {
+    // ошибка аутентификации
       res
         .status(401)
         .send({ message: err.message });

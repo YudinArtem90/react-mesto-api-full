@@ -8,9 +8,9 @@ const {
   getUsers, getUserId, addUser, updateProfile, updateAvatar, login, getUserMe,
 } = require('../controllers/users');
 
-router.post('signin', login);
+router.post('/signin', login);
 
-router.post('signup', addUser);
+router.post('/signup', addUser);
 
 router.use(auth);
 
