@@ -1,0 +1,22 @@
+.popup__icon-close_form:hover{
+    opacity: .6;
+    cursor: pointer;
+}
+
+@media (min-width: 573px){
+    .popup__icon-close_form{
+        max-height: 40px;
+        max-width: 40px;
+        left: 457px;
+        bottom: 65px;
+    }
+}
+
+@media (max-width: 572px){
+    .popup__icon-close_form{
+        max-height: 30px;
+        max-width: 30px;
+        left: 250px;
+        bottom: 52px;
+    }
+}

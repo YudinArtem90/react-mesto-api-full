@@ -1,0 +1,11 @@
+@import './__title/form-page__title.css';
+@import './__field/form-page__field.css';
+@import './__button/form-page__button.css';
+@import './__container-label/form-page__container-label.css';
+@import './__label/form-page__label.css';
+@import './__link/form-page__link.css';
+
+.form-page{
+    width: 358px;
+    margin: auto;
+}

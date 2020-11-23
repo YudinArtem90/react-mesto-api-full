@@ -1,0 +1,7 @@
+.header__main-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    border: 0;
+}

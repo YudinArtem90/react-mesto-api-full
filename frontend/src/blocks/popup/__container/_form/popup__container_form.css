@@ -1,0 +1,13 @@
+@media (min-width: 573px){
+    .popup__container_form{
+        width: 430px;
+        padding: 36px;
+    }
+}
+
+@media (max-width: 572px){
+    .popup__container_form{
+        width: 240px;
+        padding: 30px 20px;
+    }
+}

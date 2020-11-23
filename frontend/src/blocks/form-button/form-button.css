@@ -1,0 +1,22 @@
+.form-button{
+    border-radius: 2px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+}
+
+@media (min-width: 573px){
+    .form-button{
+        font-size: 18px;
+        line-height: 22px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 572px){
+    .form-button{
+        font-size: 14px;
+        line-height: 17px;
+        height: 40px;
+    }
+}

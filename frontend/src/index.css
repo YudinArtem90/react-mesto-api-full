@@ -1,0 +1,22 @@
+@import './vendor/normalize.css';
+
+/* @import '../fonts/inter.css'; */
+
+@import './blocks/body/body.css';
+@import './blocks/header-margin/header-margin.css';
+@import './blocks/header/header.css';
+@import './blocks/page/page.css';
+@import './blocks/profile/profile.css';
+@import './blocks/profile-info/profile-info.css';
+@import './blocks/element/element.css';
+@import './blocks/elements/elements.css';
+@import './blocks/footer/footer.css';
+@import './blocks/margin-footer/margin-footer.css';
+@import './blocks/popup/popup.css';
+
+@import './blocks/popup/_opened/popup_opened.css';
+@import './blocks/element/__button-like/_action/element__button-like_action.css';
+@import './blocks/form-page/form-page.css';
+@import './blocks/form-title/form-title.css';
+@import './blocks/form-field/form-field.css';
+@import './blocks/form-button/form-button.css';

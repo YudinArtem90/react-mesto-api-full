@@ -1,0 +1,22 @@
+.header__redirect{
+    color: #FFF;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    color: #A9A9A9;
+}
+
+@media (min-width: 963px){
+    .header__redirect{
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+
+@media (max-width: 962px){
+    .header__redirect{
+        padding-right: 30px;
+    }
+}

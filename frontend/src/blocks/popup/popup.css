@@ -1,0 +1,38 @@
+@import './__container/popup__container.css';
+@import './__field/popup__field.css';
+@import './__title/popup__title.css';
+@import './__view-photo-container/popup__view-photo-container.css';
+@import './__view-photo-info/popup__view-photo-info.css';
+@import './__main-container/popup__main-container.css';
+@import './__footer-container/popup__footer-container.css';
+@import './__field-error/popup__field-error.css';
+@import './__field-error/_active/popup__field-error_active.css';
+
+@import './__button/popup__button.css';
+@import './__button/_blocking/popup__save_button_blocking.css';
+@import './__button/_delete-card/popup__button_delete-card.css';
+
+@import './__icon-close/popup__icon-close.css';
+@import './__icon-close/_form/popup__icon-close_form.css';
+@import './__icon-close/_view-photo/icon-close-form_view-photo.css';
+@import './__footer-container/_card-deletion-confirmation/popup__footer-container_card-deletion-confirmation.css';
+@import './__icon-close/_delete-card/popup__icon-close_delete-card.css';
+@import './__icon-message/popup__icon-message.css';
+
+@import './__container/_form/popup__container_form.css';
+@import './__container/_message/popup__container_message.css';
+@import './__message/popup__message.css';
+@import './__icon-close/_message/popup__icon-close_message.css';
+
+.popup{
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    visibility: hidden; 
+    opacity: 0; 
+    transition: visibility .5s, opacity .7s linear;
+}

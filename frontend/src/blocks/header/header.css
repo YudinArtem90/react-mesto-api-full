@@ -1,0 +1,13 @@
+@import './__logo/header__logo.css';
+@import './__redirect/header__redirect.css';
+@import './__button-open-menu/header__button-open-menu.css';
+@import './__container-right/header__container-right.css';
+@import './__email-user/header__email-user.css';
+@import './__exit/header__exit.css';
+@import './__main-container/header__main-container.css';
+@import './__menu/header__menu.css';
+@import './__button-close-menu/header__button-close-menu.css';
+
+.header{
+    border-bottom: 1px solid #545454;  
+}

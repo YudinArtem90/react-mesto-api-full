@@ -1,0 +1,11 @@
+@media (min-width: 426px){
+    .header-margin{
+        margin-bottom: 36px;
+    }
+}
+
+@media (max-width: 425px){
+    .header-margin{
+        margin-bottom: 38px;
+    }
+}

@@ -1,0 +1,27 @@
+.form-field{
+    border: 0;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+    border-bottom: 1px solid #fbfbfb;
+}
+
+.form-field:focus {
+    outline: none;
+}
+
+@media (min-width: 573px){
+    .form-field{
+        font-size: 14px;
+        line-height: 17px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 572px){
+    .form-field{
+        font-size: 12px;
+        line-height: 15px;
+        height: 42px;
+    }
+}

@@ -1,0 +1,19 @@
+.icon-close-form_view-photo{
+    align-self: flex-end;
+}
+
+@media (min-width: 573px){
+    .icon-close-form_view-photo{
+        left: 33px;
+        top: 7px;
+        max-height: 40px;
+    }
+}
+
+@media (max-width: 572px){
+    .icon-close-form_view-photo{
+        left: 26px;
+        top: 5px;
+        max-height: 30px;
+    }
+}

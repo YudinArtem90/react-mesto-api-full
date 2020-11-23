@@ -1,0 +1,19 @@
+.header__container-right{
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: normal;
+}
+
+@media (min-width: 901px){
+    .header__container-right{
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+
+@media (max-width: 900px){
+    .header__container-right{
+        display: none;
+    }
+}

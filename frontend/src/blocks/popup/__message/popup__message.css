@@ -1,0 +1,25 @@
+.popup__message{
+    text-align: center;
+    margin: auto;
+    font-style: normal;
+    font-weight: 900;
+    padding-top: 32px;
+}
+
+@media (min-width: 573px){
+    .popup__message{
+        left: 460px;
+        bottom: 92px;
+        width: 400px;
+        font-size: 24px;
+        line-height: 29px;
+    }
+}
+
+@media (max-width: 572px){
+    .popup__message{
+        width: 244px;
+        font-size: 20px;
+        line-height: 24px;
+    }
+}

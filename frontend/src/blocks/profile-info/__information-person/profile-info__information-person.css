@@ -1,0 +1,25 @@
+.profile-info__information-person{
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin: 0;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    width: 300px; 
+}
+
+@media (min-width: 426px){
+    .profile-info__information-person{
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+
+@media (max-width: 425px){
+    .profile-info__information-person{
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+    }
+}

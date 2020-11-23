@@ -1,0 +1,6 @@
+.form-page__field{
+    display: flex;
+    color: #ccc;
+    background-color: #000;
+    margin-bottom: 30px;
+}

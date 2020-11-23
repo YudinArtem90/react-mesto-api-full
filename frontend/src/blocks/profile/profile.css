@@ -1,0 +1,23 @@
+@import './__avatar/profile__avatar.css';
+@import './__add-button/profile__add-button.css';
+@import "./__container-avatar/profile__container-avatar.css";
+@import "./__avatar-opacity/profile__avatar-opacity.css";
+
+.profile{
+    display: grid;
+}
+
+@media (min-width: 951px){
+    .profile{
+        grid-template-rows: 1fr;
+        grid-template-columns: 168px minmax(400px, 1fr) 150px;
+    }
+}
+
+@media (max-width: 950px){
+    .profile{
+        justify-items: center;
+        grid-template-rows: repeat(3, auto);
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,17 @@
+@media (min-width: 573px){
+    .popup__icon-close_message{
+        left: 460px;
+        bottom: 92px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 572px){
+    .popup__icon-close_message{
+        width: 30px;
+        height: 30px;
+        bottom: 90px;
+        left: calc(50% - 15px);
+    }
+}

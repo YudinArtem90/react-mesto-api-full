@@ -1,0 +1,6 @@
+.header__menu{
+    display: block;
+    border-bottom: 1px solid #545454;
+    text-align: center;
+    padding: 40px 0;
+}

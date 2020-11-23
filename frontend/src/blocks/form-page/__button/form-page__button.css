@@ -1,0 +1,12 @@
+.form-page__button{
+    width: 100%;
+    color: #000;
+    background-color: #fff;
+    margin: 186px 0 15px;
+}
+
+.form-page__button:hover{
+    background: #c1c0c0;
+    border-radius: 2px;
+    cursor: pointer;
+}

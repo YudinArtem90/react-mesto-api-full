@@ -1,0 +1,6 @@
+.header__button-close-menu{
+    background-image: url('../../../images/pop-up/close_icon_30_30.svg');
+    height: 40px;
+    width: 40px;
+    margin-right: 20px;
+}
