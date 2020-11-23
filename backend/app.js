@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const favicon = require('serve-favicon');
+const auth = require('./middlewares/auth');
 
 const { routerUsers, routerCards } = require('./routes');
 
@@ -41,7 +42,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/', routerUsers);
-app.use('/cards', routerCards);
+
+// проверка пользователя на авторизацию (все что ниже, могут видеть только авторизованные)
+app.use(auth);
+
+// роуты, которым авторизация нужна
+app.use('/cards', auth, routerCards);
 
 app.use('/', (req, res) => {
   getError(res, { message: 'Запрашиваемый ресурс не найден' }, { name: 'CastError' });
