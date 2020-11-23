@@ -20,7 +20,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-});
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('DB Connected!'))
+  .catch((err) => {
+    console.log(`DB Connection Error: ${err.message}`);
+  });
 
 app.use(limiter);
 app.use(bodyParser.json());
@@ -35,7 +40,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', routerUsers);
+app.use('/', routerUsers);
 app.use('/cards', routerCards);
 
 app.use('/', (req, res) => {
