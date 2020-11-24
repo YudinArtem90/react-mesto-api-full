@@ -2,6 +2,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const { Unauthorized } = require('../helpers/errors');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
@@ -76,7 +77,7 @@ module.exports.updateAvatar = (req, res) => {
     .catch((err) => getError(res, { message: `Ошибка при изменении аватара, ${err}` }, err));
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -91,12 +92,7 @@ module.exports.login = (req, res) => {
 
       res.send({ message: token });
     })
-    .catch((err) => {
-    // ошибка аутентификации
-      res
-        .status(401)
-        .send({ message: err.message });
-    });
+    .catch(next);
 };
 
 module.exports.getUserMe = (req, res) => {
