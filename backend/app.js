@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const favicon = require('serve-favicon');
 const { errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const auth = require('./middlewares/auth');
 
 const { routerUsers, routerCards } = require('./routes');
@@ -34,6 +36,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+app.use(requestLogger); // подключаем логгер запросов, до обработчиков подключать
+
 app.use('/', routerUsers);
 
 // проверка пользователя на авторизацию (все что ниже, могут видеть только авторизованные)
@@ -46,7 +50,11 @@ app.use('/', (req, res) => {
   getError(res, { message: 'Запрашиваемый ресурс не найден' }, { name: 'CastError' });
 });
 
-app.use(errors()); // обработчик ошибок celebrate
+// подключаем логгер ошибок. После обработчиков роутов и до обработчиков ошибок
+app.use(errorLogger);
+
+// обработчик ошибок celebrate
+app.use(errors());
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
