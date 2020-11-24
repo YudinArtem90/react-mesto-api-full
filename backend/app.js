@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const favicon = require('serve-favicon');
+const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 
 const { routerUsers, routerCards } = require('./routes');
@@ -44,6 +45,8 @@ app.use('/cards', auth, routerCards);
 app.use('/', (req, res) => {
   getError(res, { message: 'Запрашиваемый ресурс не найден' }, { name: 'CastError' });
 });
+
+app.use(errors()); // обработчик ошибок celebrate
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
