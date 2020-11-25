@@ -3,7 +3,7 @@ const Card = require('../models/card');
 const User = require('../models/user');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
-const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
+const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 const {
   Unauthorized, BadRequest, NotFoundError, Forbidden,
 } = require('../helpers/errors');

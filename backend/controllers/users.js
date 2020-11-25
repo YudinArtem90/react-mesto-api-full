@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { BadRequest, NotFoundError } = require('../helpers/errors');
 
-const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
+const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -33,7 +33,7 @@ module.exports.addUser = (req, res, next) => {
     .then((hash) => User.create({ email, password: hash }))
     .then((users) => getData(res, users))
     .catch((err) => {
-      throw new BadRequest(`Ошибка при создании пользователей`);
+      throw new BadRequest('Ошибка при создании пользователей');
     })
     .catch(next);
 };

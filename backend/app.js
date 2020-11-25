@@ -11,8 +11,6 @@ const auth = require('./middlewares/auth');
 
 const { routerUsers, routerCards } = require('./routes');
 
-const { getError } = require(path.join(__dirname, 'helpers', 'getData'));
-
 const app = express();
 const { PORT = 3000 } = process.env;
 const limiter = rateLimit({
@@ -27,9 +25,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 })
   .then(() => console.log('DB Connected!'))
-  .catch((err) => {
-    console.log(`DB Connection Error: ${err.message}`);
-  });
+  .catch((err) => console.log(`DB Connection Error: ${err.message}`));
 
 app.use(limiter);
 app.use(bodyParser.json());
@@ -58,8 +54,6 @@ app.use(errors());
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
-  console.log('err', err);
-
   if (err.statusCode) {
     res
       .status(err.statusCode)
