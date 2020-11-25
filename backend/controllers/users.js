@@ -58,14 +58,8 @@ module.exports.updateProfile = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const userId = req.user._id;
-  const { avatar } = req.body;
-
-  if (!avatar) {
-    getError(res, { message: 'Параметр avatar в теле запроса не найден' }, { name: 'ValidationError' });
-    return;
-  }
 
   User.findByIdAndUpdate(
     userId,
@@ -77,7 +71,10 @@ module.exports.updateAvatar = (req, res) => {
     },
   )
     .then((user) => getData(res, user))
-    .catch((err) => getError(res, { message: `Ошибка при изменении аватара, ${err}` }, err));
+    .catch((err) => {
+      throw new BadRequest('Ошибка при изменении аватара');
+    })
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {

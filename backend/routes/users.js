@@ -42,7 +42,11 @@ router.patch('/users/me', celebrate({
   }),
 }), updateProfile);
 
-router.patch('/users/me/avatar', updateAvatar);
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().min(8).trim().pattern(/^(http|https):\/\/([A-Za-z]|\.|[0-9]|\/|\#|\-|\_)+/),
+  }),
+}), updateAvatar);
 
 router.get('/users/me', getUserMe);
 
