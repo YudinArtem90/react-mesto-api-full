@@ -15,12 +15,15 @@ module.exports.getUsers = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUserId = (req, res) => {
+module.exports.getUserId = (req, res, next) => {
   const userId = req.params.id;
 
   User.findById(userId)
     .then((user) => getData(res, user))
-    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
+    .catch((err) => {
+      throw new NotFoundError('Ошибка при запросе пользователя');
+    })
+    .catch(next);
 };
 
 module.exports.addUser = (req, res, next) => {

@@ -30,14 +30,16 @@ router.use(auth);
 
 router.get('/users', getUsers);
 
-router.post('users/', addUser);
+router.get('/users/:id', celebrate({
+  params: Joi.object().keys({
+    id: Joi.required(),
+  }),
+}), getUserId);
 
-router.get('users/:id', getUserId);
+router.patch('/users/me', updateProfile);
 
-router.patch('users/me', updateProfile);
+router.patch('/users/me/avatar', updateAvatar);
 
-router.patch('users/me/avatar', updateAvatar);
-
-router.get('users/me', getUserMe);
+router.get('/users/me', getUserMe);
 
 module.exports = router;
