@@ -38,14 +38,9 @@ module.exports.addUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.updateProfile = (req, res) => {
+module.exports.updateProfile = (req, res, next) => {
   const userId = req.user._id;
   const { name } = req.body;
-
-  if (!name) {
-    getError(res, { message: 'Параметр name в теле запроса не найден' }, { name: 'ValidationError' });
-    return;
-  }
 
   User.findByIdAndUpdate(
     userId,
@@ -57,7 +52,10 @@ module.exports.updateProfile = (req, res) => {
     },
   )
     .then((user) => getData(res, user))
-    .catch((err) => getError(res, { message: `Ошибка при изменении пользователя, ${err}` }, err));
+    .catch((err) => {
+      throw new BadRequest('Ошибка при изменении пользователя');
+    })
+    .catch(next);
 };
 
 module.exports.updateAvatar = (req, res) => {
