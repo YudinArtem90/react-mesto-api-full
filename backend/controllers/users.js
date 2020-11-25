@@ -2,14 +2,17 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { Unauthorized, BadRequest } = require('../helpers/errors');
+const { Unauthorized, BadRequest, NotFoundError } = require('../helpers/errors');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => getData(res, users))
-    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
+    .catch((err) => {
+      throw new NotFoundError('Ошибка при запросе пользователя');
+    })
+    .catch(next);
 };
 
 module.exports.getUserId = (req, res) => {

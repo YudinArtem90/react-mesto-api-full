@@ -25,9 +25,10 @@ router.post('/signup', celebrate({
   }),
 }), addUser);
 
+// все что ниже, только авторизированным доступно
 router.use(auth);
 
-router.get('users/', getUsers);
+router.get('/users', getUsers);
 
 router.post('users/', addUser);
 
