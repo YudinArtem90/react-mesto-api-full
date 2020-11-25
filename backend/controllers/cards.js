@@ -40,22 +40,29 @@ module.exports.createCard = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
   Card.findOneAndDelete({
     _id: cardId,
     'owner.0': userId,
-  }, (err) => {
-    if (err) {
-      getError(res, { message: `Ошибка при удалении карточки, ${err}` }, err);
-    }
-    getData(res, { message: 'Карточка успешно удалена' });
-  });
+  })
+    .then((card) => {
+      if (card) {
+        getData(res, { message: 'Карточка успешно удалена' });
+      } else {
+        // eslint-disable-next-line no-undef
+        reject();
+      }
+    })
+    .catch((error) => {
+      throw new NotFoundError('Ошибка при удалении карточки.');
+    })
+    .catch(next);
 };
 
-module.exports.addLike = (req, res) => {
+module.exports.addLike = (req, res, next) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
@@ -68,7 +75,7 @@ module.exports.addLike = (req, res) => {
     .catch((err) => getError(res, { message: `Ошибка при добавлении лайка, ${err}` }, err));
 };
 
-module.exports.deleteLike = (req, res) => {
+module.exports.deleteLike = (req, res, next) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
