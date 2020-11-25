@@ -26,7 +26,7 @@ const cardSchema = Schema({
       validator(url) {
         return validationUrl(url);
       },
-      message: 'Ошибка',
+      message: 'Ошибка валидации url в cardSchema',
     },
   },
   owner: [{

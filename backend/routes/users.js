@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
+const { regExpUrl } = require('../helpers/constants/index');
 
 const router = express.Router();
 // eslint-disable-next-line import/order
@@ -56,7 +57,7 @@ router.patch('/users/me/avatar', celebrate({
       .required()
       .min(8)
       .trim()
-      .pattern(/^(http|https):\/\/([A-Za-z]|\.|[0-9]|\/|\#|\-|\_)+/),
+      .pattern(new RegExp(regExpUrl)),
   }),
 }), updateAvatar);
 

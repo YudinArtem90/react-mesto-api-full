@@ -4,7 +4,9 @@ const User = require('../models/user');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
-const { Unauthorized, BadRequest, NotFoundError } = require('../helpers/errors');
+const {
+  Unauthorized, BadRequest, NotFoundError, Forbidden,
+} = require('../helpers/errors');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -15,22 +17,27 @@ module.exports.getCards = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.createCard = (req, res) => {
+module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const { _id } = req.user;
 
   User.findById({ _id })
     .then((user) => {
       if (!user) {
-        res
-          .status(403)
-          .send({ message: 'Ошибка при создании карточки, пользователя не нашли в системе' });
+        throw new Forbidden('Ошибка при создании карточки, пользователя не нашли в системе');
       }
+
       Card.create({ name, link, owner: user })
         .then((card) => getData(res, card))
-        .catch((err) => getError(res, { message: `Ошибка при создании карточки, ${err}` }, err));
+        .catch((err) => {
+          throw new NotFoundError('Ошибка при создании карточки');
+        })
+        .catch(next);
     })
-    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
+    .catch((err) => {
+      throw new NotFoundError('Ошибка, пользователь не найден.');
+    })
+    .catch(next);
 };
 
 module.exports.deleteCard = (req, res) => {
