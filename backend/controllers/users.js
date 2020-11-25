@@ -2,7 +2,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { Unauthorized } = require('../helpers/errors');
+const { Unauthorized, BadRequest } = require('../helpers/errors');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
@@ -20,17 +20,16 @@ module.exports.getUserId = (req, res) => {
     .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
 };
 
-module.exports.addUser = (req, res) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+module.exports.addUser = (req, res, next) => {
+  const { email, password } = req.body;
 
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
+    .then((hash) => User.create({ email, password: hash }))
     .then((users) => getData(res, users))
-    .catch((err) => getError(res, { message: `Ошибка при создании пользователей, ${err}` }, err));
+    .catch((err) => {
+      throw new BadRequest(`Ошибка при создании пользователей`);
+    })
+    .catch(next);
 };
 
 module.exports.updateProfile = (req, res) => {
