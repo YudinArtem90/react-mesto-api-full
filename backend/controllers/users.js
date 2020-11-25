@@ -95,10 +95,13 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUserMe = (req, res) => {
+module.exports.getUserMe = (req, res, next) => {
   const { _id } = req.user;
 
   User.findOne({ _id })
     .then((users) => getData(res, users))
-    .catch((err) => getError(res, { message: `Ошибка при запросе пользователя, ${err}` }, err));
+    .catch((err) => {
+      throw new NotFoundError('Ошибка при запросе пользователя');
+    })
+    .catch(next);
 };

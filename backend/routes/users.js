@@ -13,15 +13,15 @@ const { celebrate, Joi } = require('celebrate');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    email: Joi.string().required().email().trim(),
+    password: Joi.string().required().min(8).trim(),
   }),
 }), login);
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    email: Joi.string().required().email().trim(),
+    password: Joi.string().required().min(8).trim(),
   }),
 }), addUser);
 
@@ -30,24 +30,34 @@ router.use(auth);
 
 router.get('/users', getUsers);
 
+router.get('/users/me', getUserMe);
+
 router.get('/users/:id', celebrate({
   params: Joi.object().keys({
-    id: Joi.required(),
+    id: Joi.string().trim().required(),
   }),
 }), getUserId);
 
 router.patch('/users/me', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
+    name: Joi
+      .string()
+      .trim()
+      .required()
+      .min(2)
+      .max(30),
   }),
 }), updateProfile);
 
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().min(8).trim().pattern(/^(http|https):\/\/([A-Za-z]|\.|[0-9]|\/|\#|\-|\_)+/),
+    avatar: Joi
+      .string()
+      .required()
+      .min(8)
+      .trim()
+      .pattern(/^(http|https):\/\/([A-Za-z]|\.|[0-9]|\/|\#|\-|\_)+/),
   }),
 }), updateAvatar);
-
-router.get('/users/me', getUserMe);
 
 module.exports = router;
