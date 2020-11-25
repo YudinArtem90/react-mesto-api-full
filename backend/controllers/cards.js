@@ -1,15 +1,18 @@
 const path = require('path');
-
 const Card = require('../models/card');
 const User = require('../models/user');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
+const { Unauthorized, BadRequest, NotFoundError } = require('../helpers/errors');
 
-module.exports.getCards = (req, res) => {
+module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => getData(res, cards))
-    .catch((err) => getError(res, { message: `Ошибка при запросе карточки, ${err}` }, err));
+    .catch((err) => {
+      throw new NotFoundError('Ошибка при запросе карточки');
+    })
+    .catch(next);
 };
 
 module.exports.createCard = (req, res) => {

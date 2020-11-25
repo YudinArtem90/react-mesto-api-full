@@ -2,7 +2,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { Unauthorized, BadRequest, NotFoundError } = require('../helpers/errors');
+const { BadRequest, NotFoundError } = require('../helpers/errors');
 
 const { getData, getError } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
