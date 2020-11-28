@@ -6,9 +6,10 @@ function Card(props){
 
     const {link, name, likes, onCardClick, onCardLike, onCardDelete,  owner} = props;
     const currentUser = React.useContext(CurrentUserContext);
-    const isOwn = owner._id !== currentUser._id;
-    const isLiked = likes.some(i => i._id === currentUser._id);
-
+    const isOwn = owner[0] !== currentUser._id;
+    const isLiked = likes.some(i => i === currentUser._id);
+    console.log('props', props);
+    console.log('owner[0]', owner[0]);
     function handleClick() {
         onCardClick(link);
       }

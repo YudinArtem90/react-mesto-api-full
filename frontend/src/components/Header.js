@@ -37,7 +37,7 @@ function Header(props){
                         <div className={mobileMenu ? 'header__button-close-menu' : "header__button-open-menu"} onClick={setMenu}></div>
                         <div className="header__container-right">
                             <p className="header__email-user">{props.userEmail}</p>
-                            <Link to={`${isSignIn ? '/sign-up' : '/sign-in'}`} className='header__redirect'>{isSignIn ? 'Регистрация' : 'Войти'}</Link>
+                            <Link to={`${isSignIn ? '/sign-up' : '/sign-in'}`} className='header__redirect'>{isSignIn ? 'Регистрация' : 'Выйти'}</Link>
                         </div>
                     </> :
                     <Link to={`${isSignIn ? '/sign-up' : '/sign-in'}`} className='header__redirect'>{isSignIn ? 'Регистрация' : 'Войти'}</Link>
