@@ -40,7 +40,7 @@ module.exports.addUser = (req, res, next) => {
 
 module.exports.updateProfile = (req, res, next) => {
   const userId = req.user._id;
-  const { name } = req.body;
+  // const { name } = req.body;
 
   User.findByIdAndUpdate(
     userId,
@@ -60,6 +60,10 @@ module.exports.updateProfile = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const userId = req.user._id;
+  console.log('userId', req.body);
+  console.log('req.body', req.body);
+
+  // User.findById(userId).then((user) => {console.log('user', user); getData(res, user)})
 
   User.findByIdAndUpdate(
     userId,
@@ -70,8 +74,9 @@ module.exports.updateAvatar = (req, res, next) => {
       upsert: true,
     },
   )
-    .then((user) => getData(res, user))
+    .then((user) => {console.log('user', user); getData(res, user)})
     .catch((err) => {
+      console.log('err', err);
       throw new BadRequest('Ошибка при изменении аватара');
     })
     .catch(next);
@@ -90,7 +95,7 @@ module.exports.login = (req, res, next) => {
         { expiresIn: '7d' },
       );
 
-      res.send({ message: token });
+      res.send({ token });
     })
     .catch(next);
 };

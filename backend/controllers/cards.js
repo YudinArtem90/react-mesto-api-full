@@ -66,31 +66,16 @@ module.exports.addLike = (req, res, next) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
-  Card.find({
-    owner: userId,
-    _id: cardId,
-  })
-    .then((arrayCard) => {
-      if (arrayCard.length) {
-        Card.findByIdAndUpdate(
-          cardId,
-          { $addToSet: { likes: userId } },
-          { new: true },
-        )
-          .then((card) => {
-            getData(res, card);
-          })
-          .catch((err) => {
-            throw new NotFoundError('Ошибка при добавлении лайка.');
-          })
-          .catch(next);
-      } else {
-        // eslint-disable-next-line no-undef
-        reject();
-      }
+  Card.findByIdAndUpdate(
+    cardId,
+    { $addToSet: { likes: userId } },
+    { new: true },
+  )
+    .then((card) => {
+      getData(res, card);
     })
     .catch((err) => {
-      throw new NotFoundError('Нельзя поставить лайк не своей карточке, либо карточка не найдена в БД.');
+      throw new NotFoundError('Ошибка при добавлении лайка.');
     })
     .catch(next);
 };
@@ -100,7 +85,7 @@ module.exports.deleteLike = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.find({
-    owner: userId,
+    likes: userId,
     _id: cardId,
   })
     .then((arrayCard) => {

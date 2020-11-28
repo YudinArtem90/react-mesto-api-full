@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const favicon = require('serve-favicon');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NotFoundError } = require('./helpers/errors/index');
 const auth = require('./middlewares/auth');
@@ -12,7 +13,7 @@ const auth = require('./middlewares/auth');
 const { routerUsers, routerCards } = require('./routes');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -27,10 +28,17 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   .then(() => console.log('DB Connected!'))
   .catch((err) => console.log(`DB Connection Error: ${err.message}`));
 
-app.use(limiter);
+// app.use(limiter); - на время
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+// что бы не ругался на CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Max-Age', '86400');
+  next();
+});
+app.use(cors());
 
 app.use(requestLogger); // подключаем логгер запросов, до обработчиков подключать
 
@@ -54,6 +62,8 @@ app.use(errors());
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
+  console.log('err.statusCode', err.statusCode);
+  console.log('err.message', err.message);
   if (err.statusCode) {
     res
       .status(err.statusCode)
