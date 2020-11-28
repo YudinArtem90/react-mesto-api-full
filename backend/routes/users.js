@@ -47,6 +47,12 @@ router.patch('/users/me', celebrate({
       .required()
       .min(2)
       .max(30),
+    about: Joi
+      .string()
+      .trim()
+      .required()
+      .min(2)
+      .max(30),
   }),
 }), updateProfile);
 
