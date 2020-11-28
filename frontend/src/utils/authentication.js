@@ -3,7 +3,7 @@ import Ajax from './ajax';
 class Authentication extends Ajax{
     constructor({baseUrl}){
         super();
-        this._baseUrl = baseUrl;
+        // this._baseUrl = baseUrl;
     }
 
     signup(data){
@@ -37,7 +37,8 @@ class Authentication extends Ajax{
 }
 
 const authentication = new Authentication({
-    baseUrl: 'https://auth.nomoreparties.co'
+    // baseUrl: 'http://127.0.0.1:3001'
+    // baseUrl: 'https://auth.nomoreparties.co'
 });
 
 export default authentication;

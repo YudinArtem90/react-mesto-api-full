@@ -1,9 +1,13 @@
+import workingWithToken from './workingWithToken';
 class Ajax{
 
     constructor(baseUrl){
-        this._baseUrl= baseUrl;
+        // this._baseUrl= baseUrl;
+        this._baseUrl= 'http://127.0.0.1:3001';
         this._data = {
-            headers : {}
+            headers : {
+                authorization: workingWithToken.getToken()
+            }
         };
     }
 
