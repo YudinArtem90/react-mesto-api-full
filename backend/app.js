@@ -22,19 +22,14 @@ const limiter = rateLimit({
   max: 100,
 });
 
-// mongoose.connect('mongodb://localhost:27017/mestodb', {
-  mongoose.connect('mongodb://artem.students.nomoredomains.monster:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 })
   .then(() => console.log('DB Connected!'))
-  .catch((err) => {
-    res
-      .status(500)
-      .send({ message: err.message })
-    });
+  .catch((err) => console.log(`DB Connection Error: ${err.message}`));
 
 app.use(limiter);
 app.use(bodyParser.json());

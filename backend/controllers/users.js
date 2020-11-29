@@ -60,10 +60,6 @@ module.exports.updateProfile = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const userId = req.user._id;
-  console.log('userId', userId);
-  console.log('req.body', req.body);
-
-  // User.findById(userId).then((user) => {console.log('user', user); getData(res, user)})
 
   User.findByIdAndUpdate(
     userId,
