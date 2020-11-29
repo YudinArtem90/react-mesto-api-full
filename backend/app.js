@@ -10,6 +10,9 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NotFoundError } = require('./helpers/errors/index');
 const auth = require('./middlewares/auth');
 
+// что бы считывала инфу с .env файла
+require('dotenv').config();
+
 const { routerUsers, routerCards } = require('./routes');
 
 const app = express();
@@ -28,7 +31,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   .then(() => console.log('DB Connected!'))
   .catch((err) => console.log(`DB Connection Error: ${err.message}`));
 
-// app.use(limiter); - на время
+app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

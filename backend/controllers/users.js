@@ -60,7 +60,7 @@ module.exports.updateProfile = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const userId = req.user._id;
-  console.log('userId', req.body);
+  console.log('userId', userId);
   console.log('req.body', req.body);
 
   // User.findById(userId).then((user) => {console.log('user', user); getData(res, user)})
@@ -91,7 +91,7 @@ module.exports.login = (req, res, next) => {
     // add token
       const token = jwt.sign(
         { _id: user._id },
-        'some-secret-key',
+        process.env.JWT_SECRET,
         { expiresIn: '7d' },
       );
 
