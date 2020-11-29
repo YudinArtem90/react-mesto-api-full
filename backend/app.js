@@ -30,7 +30,11 @@ const limiter = rateLimit({
   useUnifiedTopology: true,
 })
   .then(() => console.log('DB Connected!'))
-  .catch((err) => console.log(`DB Connection Error: ${err.message}`));
+  .catch((err) => {
+    res
+      .status(500)
+      .send({ message: err.message })
+    });
 
 app.use(limiter);
 app.use(bodyParser.json());
