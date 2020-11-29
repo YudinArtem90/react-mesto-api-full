@@ -2,8 +2,7 @@ import workingWithToken from './workingWithToken';
 class Ajax{
 
     constructor(baseUrl){
-        // this._baseUrl= baseUrl;
-        this._baseUrl= 'http://127.0.0.1:3001';
+        this._baseUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:3001'; 
         this._data = {
             headers : {
                 authorization: workingWithToken.getToken()
