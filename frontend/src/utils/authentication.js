@@ -36,9 +36,6 @@ class Authentication extends Ajax{
     }
 }
 
-const authentication = new Authentication({
-    // baseUrl: 'http://127.0.0.1:3001'
-    // baseUrl: 'https://auth.nomoreparties.co'
-});
+const authentication = new Authentication({});
 
 export default authentication;

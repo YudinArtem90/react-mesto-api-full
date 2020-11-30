@@ -149,13 +149,13 @@ function App(props) {
   function login(data){
     authentication.signin(data)
       .then(res => {
-        getCurrentUser();
         successfulLogin(data, res);
         setTimeout(function(){
           setInfoTooltip({
             isVisible : false,
             typeMessage : true
           });
+          getCurrentUser();
           props.history.push('/');
         }, 2000);
       })
@@ -165,13 +165,13 @@ function App(props) {
   }
 
   function successfulLogin(data, res){
+    workingWithToken.saveToken(res.token);
     setInfoTooltip({
       isVisible : true,
       typeMessage : true
     });
     setEmail(data.email);
     setLoggedIn(true);
-    workingWithToken.saveToken(res.token);
   }
 
   function failedLogin(){

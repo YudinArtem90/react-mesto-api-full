@@ -2,12 +2,9 @@ import workingWithToken from './workingWithToken';
 class Ajax{
 
     constructor(baseUrl){
+        console.log('process.env', process.env);
         this._baseUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:3001'; 
-        this._data = {
-            headers : {
-                authorization: workingWithToken.getToken()
-            }
-        };
+        this._data = {};
     }
 
     _resetParameters(){
@@ -19,7 +16,12 @@ class Ajax{
     }
 
     _getData({method = "GET", body, contentType}){
+        // debugger;
         this._resetParameters();
+
+        this._data.headers = {
+            authorization: workingWithToken.getToken()
+        };
 
         this._data.method = method;
         if(body){

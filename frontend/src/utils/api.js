@@ -11,11 +11,13 @@ class Api extends Ajax{
     }
 
     getUserInfo(){
+        super._getData({});
         return fetch(`${this._baseUrl}/users/me`, this._data)
                     .then(res => { return super._getResult(res) });
     }
 
     getCards(){
+        super._getData({});
         return fetch(`${this._baseUrl}/cards`, this._data)
                     .then(res => { return super._getResult(res) });
     }
