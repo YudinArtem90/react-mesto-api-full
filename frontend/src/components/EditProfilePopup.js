@@ -4,32 +4,18 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props){
     const {isOpen, onClose} = props;
-    const [name, setName] = React.useState('');
-    const [description, setDescription] = React.useState('');
     const currentUser = React.useContext(CurrentUserContext);
 
-    React.useEffect(() => {
-        setName(currentUser.name);
-        setDescription(currentUser.about);
-      }, [currentUser]);
-
-    function onChangeName(e){
-        e.preventDefault();
-        setName(e.target.value);
-    }
-
-    function onChangeAbout(e){
-        e.preventDefault();
-        setDescription(e.target.value);
-    }
+    const nameRef = React.useRef();
+    const descriptionRef = React.useRef();
 
     function handleSubmit(e) {
         e.preventDefault();
 
         props.onUpdateUser({
-          name,
-          about: description,
-        });
+            name: nameRef.current.value,
+            about: descriptionRef.current.value
+          });
     }
     
     function PopupElementEditProfile(){
@@ -41,10 +27,10 @@ function EditProfilePopup(props){
                     type="text" 
                     name="namePerson" 
                     minLength={2} 
-                    maxLength={40} 
-                    onChange={onChangeName}
-                    value={name}
+                    maxLength={40}
+                    defaultValue={currentUser.name}
                     pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" 
+                    ref={nameRef}
                     required 
                 />
                 <span id="name_person-error" className="popup__field-error" />
@@ -54,9 +40,9 @@ function EditProfilePopup(props){
                     type="text" 
                     name="informPerson" 
                     minLength={2} 
-                    maxLength={200}  
-                    onChange={onChangeAbout}
-                    value={description} 
+                    maxLength={200}
+                    defaultValue={currentUser.about} 
+                    ref={descriptionRef}
                     required 
                 />
                 <span id="inform_person-error" className="popup__field-error" />
