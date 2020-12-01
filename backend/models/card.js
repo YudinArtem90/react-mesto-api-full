@@ -29,11 +29,11 @@ const cardSchema = Schema({
       message: 'Ошибка валидации url в cardSchema',
     },
   },
-  owner: [{
+  owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     require: true,
-  }],
+  },
 });
 
 module.exports = mongoose.model('card', cardSchema);

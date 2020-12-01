@@ -27,7 +27,7 @@ module.exports.createCard = (req, res, next) => {
         throw new Forbidden('Ошибка при создании карточки, пользователя не нашли в системе');
       }
 
-      Card.create({ name, link, owner: user })
+      Card.create({ name, link, owner: _id })
         .then((card) => getData(res, card))
         .catch(next);
     })
@@ -43,7 +43,7 @@ module.exports.deleteCard = (req, res, next) => {
 
   Card.findOneAndDelete({
     _id: cardId,
-    'owner.0': userId,
+    owner: userId,
   })
     .then((card) => {
       if (card) {
