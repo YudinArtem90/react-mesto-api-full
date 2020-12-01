@@ -1,5 +1,3 @@
-const Error = require('./Error');
-
 class NotFoundError extends Error {
   constructor(message) {
     super(message);
