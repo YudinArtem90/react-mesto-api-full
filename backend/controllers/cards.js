@@ -29,9 +29,6 @@ module.exports.createCard = (req, res, next) => {
 
       Card.create({ name, link, owner: user })
         .then((card) => getData(res, card))
-        .catch((err) => {
-          throw new NotFoundError('Ошибка при создании карточки');
-        })
         .catch(next);
     })
     .catch((err) => {
