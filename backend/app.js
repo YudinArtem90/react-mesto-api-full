@@ -3,7 +3,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
-const favicon = require('serve-favicon');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -34,7 +33,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // что бы не ругался на CORS
 app.use((req, res, next) => {

@@ -15,7 +15,6 @@
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.2",
-    "serve-favicon": "^2.5.0",
     "validator": "^13.1.17",
     "winston": "^3.3.3"
   },
