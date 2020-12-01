@@ -116,28 +116,4 @@ module.exports.deleteLike = (req, res, next) => {
       }
     })
     .catch(next);
-
-  // Card.find({
-  //   likes: userId,
-  //   _id: cardId,
-  // })
-  //   .then((arrayCard) => {
-  //     if (arrayCard.length) {
-  //       Card.findByIdAndUpdate(
-  //         cardId,
-  //         { $pull: { likes: userId } },
-  //         { new: true },
-  //       )
-  //         .then((card) => {
-  //           getData(res, card);
-  //         })
-  //         .catch((err) => {
-  //           throw new NotFoundError('Ошибка при удалении лайка.');
-  //         })
-  //         .catch(next);
-  //     } else {
-  //       throw new Forbidden('У данной карточки нет лайков.');
-  //     }
-  //   })
-  //   .catch(next);
 };

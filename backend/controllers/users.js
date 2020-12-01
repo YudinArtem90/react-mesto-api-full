@@ -35,7 +35,7 @@ module.exports.addUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, email, password: hash,
     }))
-    .then((users) => getData(res, users))
+    .then((users) => getData(res, { message: 'Учетная запись создана' }))
     .catch((err) => {
       if (err.name === 'MongoError' && err.code === 11000) {
         throw new Conflict('Данный пользователь уже существует в базе.');
