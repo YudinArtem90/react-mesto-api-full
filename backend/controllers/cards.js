@@ -41,20 +41,24 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
-  Card.findOneAndDelete({
-    _id: cardId,
-    owner: userId,
-  })
+  Card.findById({ _id: cardId })
     .then((card) => {
       if (card) {
-        getData(res, { message: 'Карточка успешно удалена' });
+        Card.findOneAndDelete({
+          _id: cardId,
+          owner: userId,
+        })
+          .then((deleteCard) => {
+            if (deleteCard) {
+              getData(res, { message: 'Карточка успешно удалена' });
+            } else {
+              throw new Forbidden('Нет прав на удаление карточки.');
+            }
+          })
+          .catch(next);
       } else {
-        // eslint-disable-next-line no-undef
-        reject();
+        throw new NotFoundError('Карточка не найдена в базе.');
       }
-    })
-    .catch((error) => {
-      throw new NotFoundError('Ошибка при удалении карточки.');
     })
     .catch(next);
 };
@@ -81,31 +85,59 @@ module.exports.deleteLike = (req, res, next) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
-  Card.find({
-    likes: userId,
-    _id: cardId,
-  })
-    .then((arrayCard) => {
-      if (arrayCard.length) {
-        Card.findByIdAndUpdate(
-          cardId,
-          { $pull: { likes: userId } },
-          { new: true },
-        )
-          .then((card) => {
-            getData(res, card);
-          })
-          .catch((err) => {
-            throw new NotFoundError('Ошибка при удалении лайка.');
+  Card.find({ _id: cardId })
+    .then((card) => {
+      if (!card.length) {
+        throw new NotFoundError('Карточки нет в базе.');
+      } else {
+        Card.find({
+          likes: userId,
+          _id: cardId,
+        })
+          .then((arrayCard) => {
+            if (arrayCard.length) {
+              Card.findByIdAndUpdate(
+                cardId,
+                { $pull: { likes: userId } },
+                { new: true },
+              )
+                .then((deleteCard) => {
+                  getData(res, deleteCard);
+                })
+                .catch((err) => {
+                  throw new NotFoundError('Ошибка при удалении лайка.');
+                })
+                .catch(next);
+            } else {
+              throw new NotFoundError('У данно карточки нет лайка поставленного Вами.');
+            }
           })
           .catch(next);
-      } else {
-        // eslint-disable-next-line no-undef
-        reject();
       }
     })
-    .catch((err) => {
-      throw new NotFoundError('Нельзя поставить лайк не своей карточке, либо карточка не найдена в БД.');
-    })
     .catch(next);
+
+  // Card.find({
+  //   likes: userId,
+  //   _id: cardId,
+  // })
+  //   .then((arrayCard) => {
+  //     if (arrayCard.length) {
+  //       Card.findByIdAndUpdate(
+  //         cardId,
+  //         { $pull: { likes: userId } },
+  //         { new: true },
+  //       )
+  //         .then((card) => {
+  //           getData(res, card);
+  //         })
+  //         .catch((err) => {
+  //           throw new NotFoundError('Ошибка при удалении лайка.');
+  //         })
+  //         .catch(next);
+  //     } else {
+  //       throw new Forbidden('У данной карточки нет лайков.');
+  //     }
+  //   })
+  //   .catch(next);
 };
