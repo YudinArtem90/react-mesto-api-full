@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
-const { regExpUrl } = require('../helpers/constants/index');
+const { regExpUrl, regExpObjectId } = require('../helpers/constants/index');
 
 const router = express.Router();
 // eslint-disable-next-line import/order
@@ -35,7 +35,7 @@ router.get('/users/me', getUserMe);
 
 router.get('/users/:id', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().trim().required(),
+    id: Joi.string().trim().required().pattern(new RegExp(regExpObjectId)),
   }),
 }), getUserId);
 
