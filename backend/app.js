@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
@@ -61,8 +60,6 @@ app.use(errors());
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
-  console.log('err.statusCode', err.statusCode);
-  console.log('err.message', err.message);
   if (err.statusCode) {
     res
       .status(err.statusCode)

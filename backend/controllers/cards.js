@@ -4,9 +4,7 @@ const User = require('../models/user');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
-const {
-  Unauthorized, BadRequest, NotFoundError, Forbidden,
-} = require('../helpers/errors');
+const { NotFoundError, Forbidden } = require('../helpers/errors');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
