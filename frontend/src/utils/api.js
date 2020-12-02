@@ -2,18 +2,6 @@ import Ajax from './ajax';
 class Api extends Ajax{
     constructor({baseUrl, groupId, authorization}){
         super(baseUrl);
-        // this._groupId = groupId;
-        // super._data = {
-        //     headers: {
-        //         authorization: authorization
-        //     }
-        // };
-    }
-
-    getUserInfo(){
-        super._getData({});
-        return fetch(`${this._baseUrl}/users/me`, this._data)
-                    .then(res => { return super._getResult(res) });
     }
 
     getCards(){
@@ -77,11 +65,6 @@ class Api extends Ajax{
 }
 
 
-const api = new Api({
-    // baseUrl: 'https://mesto.nomoreparties.co/v1',
-    // groupId: 'cohort-12',
-    // authorization: 'f77ffc2a-fabb-4e1a-b96f-391d240718e4'
-    // authorization: localStorage.getItem('')
-  });
+const api = new Api({});
 
 export default api;

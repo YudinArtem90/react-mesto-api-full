@@ -19,17 +19,6 @@ import authentication from '../utils/authentication';
 import workingWithToken from '../utils/workingWithToken';
 import workingWithUser from '../utils/workingWithUser'
 
-function PopupElementEditProfile(){
-  return (
-      <>
-          <input id="name_person" className="popup__field popup__field_name_person" type="text" name="namePerson" minLength={2} maxLength={40} pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" required />
-          <span id="name_person-error" className="popup__field-error" />
-          <input id="inform_person" className="popup__field popup__field_inform_person" type="text" name="informPerson" minLength={2} maxLength={200} required />
-          <span id="inform_person-error" className="popup__field-error" />
-      </>
-  );
-}
-
 function App(props) {
 
   const [isEditProfilePopupOpen, openEditProfilePopupClick] = React.useState(false);
@@ -47,21 +36,14 @@ function App(props) {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   function getCurrentUser(){
-    //старый метод получение данных от пользователя
-    api.getUserInfo()
-      .then((res) => {
-        setLoggedIn(true);
-        changeCurrentUser(res);
-      })
-      .catch((error) => console.log('Ошибка при первичной загрузке данных пользователя', error));
-
-    //новый метод получение данных от пользователя
     workingWithUser.getUserInfo()
       .then((res) => {
-        if(res.data.email){
-          setEmail(res.data.email);
+        if(res){
+          setEmail(res.email);
+          setLoggedIn(true);
+          changeCurrentUser(res);
         }else{
-          console.log('Ошибка, данных о email нет', res)
+          console.log('Ошибка, данных нет', res)
         }
       })
       .catch((error) => console.log('Ошибка при первичной загрузке данных пользователя', error));;
@@ -206,7 +188,6 @@ function App(props) {
   }, []);
 
 
-  console.log('this', this);
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">

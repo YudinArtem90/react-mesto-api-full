@@ -18,7 +18,5 @@ class WorkingWithUser extends Ajax{
     }
 }
 
-const workingWithUser = new WorkingWithUser({
-    // baseUrl: 'https://auth.nomoreparties.co'
-  });
+const workingWithUser = new WorkingWithUser({});
 export default workingWithUser;

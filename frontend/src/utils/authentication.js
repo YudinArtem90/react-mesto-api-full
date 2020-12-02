@@ -3,7 +3,6 @@ import Ajax from './ajax';
 class Authentication extends Ajax{
     constructor({baseUrl}){
         super();
-        // this._baseUrl = baseUrl;
     }
 
     signup(data){
