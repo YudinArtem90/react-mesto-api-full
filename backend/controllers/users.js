@@ -1,10 +1,11 @@
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { BadRequest, NotFoundError } = require('../helpers/errors');
+const { NotFoundError } = require('../helpers/errors');
 const checkErrors = require('../helpers/checkErrors');
 
 const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
+const getJwtSecret = require('../helpers/getJwtSecret');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -67,7 +68,7 @@ module.exports.login = (req, res, next) => {
     // add token
       const token = jwt.sign(
         { _id: user._id },
-        process.env.JWT_SECRET,
+        getJwtSecret(),
         { expiresIn: '7d' },
       );
 

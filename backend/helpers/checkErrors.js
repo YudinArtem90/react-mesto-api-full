@@ -1,4 +1,6 @@
-const { NotFoundError, Forbidden, BadRequest, Conflict } = require('./errors');
+const {
+  NotFoundError, BadRequest, Conflict,
+} = require('./errors');
 
 const checkErrors = (error, next) => {
   let result = error;
@@ -22,10 +24,7 @@ const checkErrors = (error, next) => {
     default: break;
   }
 
-  console.log('error.name', error.name);
-  console.log('result', result);
-
   next(result);
-}
+};
 
 module.exports = checkErrors;
