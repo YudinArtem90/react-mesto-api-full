@@ -23,6 +23,8 @@ router.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email().trim(),
     password: Joi.string().required().min(8).trim(),
+    name: Joi.string().trim().min(2).max(30),
+    avatar: Joi.string().trim().pattern(new RegExp(regExpUrl)),
   }),
 }), addUser);
 
@@ -61,7 +63,6 @@ router.patch('/users/me/avatar', celebrate({
     avatar: Joi
       .string()
       .required()
-      .min(8)
       .trim()
       .pattern(new RegExp(regExpUrl)),
   }),
