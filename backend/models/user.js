@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { Unauthorized } = require('../helpers/errors');
+const { Unauthorized, BadRequest } = require('../helpers/errors');
 const { validationUrl, validationEmail } = require('../helpers/validation');
+const checkErrors = require('../helpers/checkErrors');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -46,23 +47,35 @@ const userSchema = new mongoose.Schema({
 });
 
 // eslint-disable-next-line func-names
-userSchema.statics.findUserByCredentials = function (email, password) {
+userSchema.statics.findUserByCredentials = function (email, password, next) {
   return this.findOne({ email })
+    .orFail(() => new Unauthorized('Неправильные почта или пароль'))
     .select('+password') // для того, что бы отдал пароль (т.к он не отдается по умолчанию - select: false)
-    .then((user) => {
-      if (!user) {
-        throw new Unauthorized('Неправильные почта или пароль');
-      }
+    .then((user) => bcrypt.compare(password, user.password)
+      .then((matched) => {
+        if (!matched) {
+          throw new Unauthorized('Неправильные почта или пароль');
+        }
 
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            throw new Unauthorized('Неправильные почта или пароль');
-          }
-
-          return user;
-        });
-    });
+        return user;
+      }));
 };
+
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+
+  if (this.password.length < 8) {
+    next(new BadRequest('Переданный не корректные данные.'));
+  }
+
+  bcrypt.hash(this.password, 10)
+    .then((hash) => {
+      this.password = hash;
+      next();
+    })
+    .catch((err) => next(checkErrors(err, next)));
+});
 
 module.exports = mongoose.model('user', userSchema);

@@ -1,18 +1,15 @@
 const path = require('path');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { BadRequest, NotFoundError, Conflict } = require('../helpers/errors');
+const { BadRequest, NotFoundError } = require('../helpers/errors');
+const checkErrors = require('../helpers/checkErrors');
 
 const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => getData(res, users))
-    .catch((err) => {
-      throw new NotFoundError('Ошибка при запросе пользователя');
-    })
-    .catch(next);
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.getUserId = (req, res, next) => {
@@ -20,29 +17,13 @@ module.exports.getUserId = (req, res, next) => {
 
   User.findById(userId)
     .then((user) => getData(res, user))
-    .catch((err) => {
-      throw new NotFoundError('Ошибка при запросе пользователя');
-    })
-    .catch(next);
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.addUser = (req, res, next) => {
-  const {
-    name, about, email, password,
-  } = req.body;
-
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, email, password: hash,
-    }))
-    .then((users) => getData(res, { message: 'Учетная запись создана' }))
-    .catch((err) => {
-      if (err.name === 'MongoError' && err.code === 11000) {
-        throw new Conflict('Данный пользователь уже существует в базе.');
-      }
-      throw new BadRequest('Ошибка при создании пользователей');
-    })
-    .catch(next);
+  User.create(req.body)
+    .then(() => getData(res, { message: 'Учетная запись создана' }))
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.updateProfile = (req, res, next) => {
@@ -58,10 +39,7 @@ module.exports.updateProfile = (req, res, next) => {
     },
   )
     .then((user) => getData(res, user))
-    .catch((err) => {
-      throw new BadRequest('Ошибка при изменении пользователя');
-    })
-    .catch(next);
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -77,10 +55,7 @@ module.exports.updateAvatar = (req, res, next) => {
     },
   )
     .then((user) => getData(res, user))
-    .catch((err) => {
-      throw new BadRequest('Ошибка при изменении аватара');
-    })
-    .catch(next);
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.login = (req, res, next) => {
@@ -98,7 +73,7 @@ module.exports.login = (req, res, next) => {
 
       res.send({ token });
     })
-    .catch(next);
+    .catch((err) => next(checkErrors(err, next)));
 };
 
 module.exports.getUserMe = (req, res, next) => {

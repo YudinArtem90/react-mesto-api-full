@@ -1,4 +1,4 @@
-const { NotFoundError, Forbidden, BadRequest } = require('./errors');
+const { NotFoundError, Forbidden, BadRequest, Conflict } = require('./errors');
 
 const checkErrors = (error, next) => {
   let result = error;
@@ -15,6 +15,9 @@ const checkErrors = (error, next) => {
       break;
     case 'DocumentNotFoundError':
       result = new NotFoundError('Не найдено искомый объект в базе.');
+      break;
+    case 'MongoError':
+      result = new Conflict('Данный пользователь уже существует в базе.');
       break;
     default: break;
   }
