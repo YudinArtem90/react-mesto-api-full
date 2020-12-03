@@ -81,7 +81,7 @@ module.exports.getUserMe = (req, res, next) => {
   const { _id } = req.user;
 
   User.findOne({ _id })
-    .then((users) => getData(res, users))
     .orFail(() => new NotFoundError('Пользователь не найден.'))
+    .then((users) => getData(res, users))
     .catch((err) => next(checkErrors(err, next)));
 };

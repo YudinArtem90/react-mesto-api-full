@@ -60,6 +60,7 @@ app.use(errors());
 
 // централизованная обработка ошибок
 app.use((err, req, res, next) => {
+  console.log('err', err);
   if (err.statusCode) {
     res
       .status(err.statusCode)

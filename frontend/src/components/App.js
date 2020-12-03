@@ -30,7 +30,8 @@ function App(props) {
   const [cards, setCards] = React.useState([]);
   const [infoTooltip, setInfoTooltip] = React.useState({
     isVisible : false,
-    typeMessage : false
+    typeMessage : false,
+    message: ''
   });
   const [userEmail, setEmail] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -114,59 +115,64 @@ function App(props) {
   function register(data){
     authentication.signup(data)
         .then(res => {
-          successfulLogin(data, res);
+          successfulLogin(data, res, 'Вы успешно зарегистрировались!');
           setTimeout(function(){
             setInfoTooltip({
               isVisible : false,
-              typeMessage : true
+              typeMessage : true,
+              message: ''
             });
             props.history.push('/sign-in');
           }, 2000);
         })
-        .catch(error => {
-          failedLogin();
-        });
+        .catch(error => failedLogin(error));
   }
 
   function login(data){
     authentication.signin(data)
       .then(res => {
-        successfulLogin(data, res);
+        successfulLogin(data, res, 'Вы успешно авторизовались');
         setTimeout(function(){
           setInfoTooltip({
             isVisible : false,
-            typeMessage : true
+            typeMessage : true,
+            message: ''
           });
           getCurrentUser();
           props.history.push('/');
         }, 2000);
       })
-      .catch(error => {
-        failedLogin();
-      });
+      .catch(error => failedLogin(error));
   }
 
-  function successfulLogin(data, res){
+  function successfulLogin(data, res, message = ''){
     workingWithToken.saveToken(res.token);
     setInfoTooltip({
       isVisible : true,
-      typeMessage : true
+      typeMessage : true,
+      message: message
     });
     setEmail(data.email);
     setLoggedIn(true);
   }
 
-  function failedLogin(){
+  function failedLogin(error){
     setInfoTooltip({
       isVisible : true,
-      typeMessage : false
+      typeMessage : false,
+      message: getErrorMessage(error)
     });
+  }
+
+  function getErrorMessage(error){
+    return error.error ? error.validation.body.message : error.message;
   }
 
   function onCloseInfoTooltip(){
     setInfoTooltip({
       isVisible : false,
-      typeMessage : false
+      typeMessage : true,
+      message: ''
     });
   }
 

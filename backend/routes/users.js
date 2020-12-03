@@ -10,21 +10,54 @@ const {
 } = require('../controllers/users');
 
 // eslint-disable-next-line import/order
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
+
+const { BadRequest } = require('../helpers/errors');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email().trim(),
-    password: Joi.string().required().min(8).trim(),
+    email: Joi.string().required().email().trim()
+      .messages({
+        'string.email': 'Не правильный формат "email"',
+        'string.empty': 'email не может быть пустым',
+        'any.required': '"email" обязательное поле',
+      }),
+    password: Joi.string().required().min(8).trim()
+      .messages({
+        'string.empty': 'Пароль не может быть пустым',
+        'any.required': 'Пароль обязательное поле',
+        'string.min': 'Пароль не должен быть меньше {#limit} символов',
+      }),
+  }).messages({
+    'object.unknown': 'Все поля должны быть заполнены',
   }),
 }), login);
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email().trim(),
-    password: Joi.string().required().min(8).trim(),
-    name: Joi.string().trim().min(2).max(30),
-    avatar: Joi.string().trim().pattern(new RegExp(regExpUrl)),
+    email: Joi.string().required().email().trim()
+      .messages({
+        'string.email': 'Не правильный формат "email"',
+        'string.empty': 'email не может быть пустым',
+        'any.required': '"email" обязательное поле',
+      }),
+    password: Joi.string().required().min(8).trim()
+      .trim()
+      .messages({
+        'string.empty': 'Пароль не может быть пустым',
+        'any.required': 'Пароль обязательное поле',
+        'string.min': 'Пароль не должен быть меньше {#limit} символов',
+      }),
+    name: Joi.string().trim().min(2).max(30)
+      .messages({
+        'string.min': 'Пароль не должен быть меньше {#limit} символов',
+        'string.max': 'Пароль не должен быть больше {#limit} символов',
+      }),
+    avatar: Joi.string().trim().pattern(new RegExp(regExpUrl)).messages({
+      'string.pattern.name': 'Пароль не должен быть меньше {#limit} символов',
+      'string.pattern.invert.base': 'Пароль не должен быть больше {#limit} символов',
+      'string.pattern.invert.name': 'Пароль не должен быть больше {#limit} символов2',
+    }),
   }),
 }), addUser);
 

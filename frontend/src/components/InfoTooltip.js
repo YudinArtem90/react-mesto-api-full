@@ -1,7 +1,7 @@
 import React from 'react';
 import Popup from './Popup.js';
 
-function InfoTooltip({isVisible, typeMessage, onCloseInfoTooltip}){
+function InfoTooltip({isVisible, typeMessage, onCloseInfoTooltip, message}){
 
     return(
         <Popup
@@ -9,6 +9,7 @@ function InfoTooltip({isVisible, typeMessage, onCloseInfoTooltip}){
             typeMessage={typeMessage}
             popupMessage={true}
             onClose={onCloseInfoTooltip}
+            message={message}
         />
     );
 }

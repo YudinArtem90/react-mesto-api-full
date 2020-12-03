@@ -3,7 +3,7 @@ import closeIcon from '../images/pop-up/close_icon.svg';
 import logoTrue from '../images/logo-popup-message/true.svg';
 import logoFalse from '../images/logo-popup-message/false.svg';
 
-function Popup({title, name, children, isOpen, onClose, textButton, onSubmit, popupMessage = false, typeMessage}){
+function Popup({title, name, children, isOpen, onClose, textButton, onSubmit, popupMessage = false, typeMessage, message}){
 
         return(
           <div className={`popup ${isOpen && 'popup_opened'}`} id={name}>
@@ -12,7 +12,7 @@ function Popup({title, name, children, isOpen, onClose, textButton, onSubmit, po
                 <div className={`popup__container popup__container_message`}>
                   <img src={closeIcon} alt="Кнопка закрытия модального окна" className="popup__icon-close popup__icon-close_message" onClick={onClose}/>
                   <img src={typeMessage ? logoTrue : logoFalse} alt={`Информационное модальное окно`} className='popup__icon-message'/>
-                  <h2 className='popup__message'>{`${typeMessage ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}`}</h2>
+                  <h2 className='popup__message'>{message}</h2>
                 </div> 
                 :
                 <form className="popup__container popup__container_form" method="post" onSubmit={onSubmit} noValidate>

@@ -32,9 +32,9 @@ class Ajax{
     }
 
     _getResult(res){
-        return res.ok ?
-                res.json() :
-                Promise.reject(`Ошибка: ${res.status}`);
+        return res.json().then(json => {
+            return res.ok ? json : Promise.reject(json);
+          });
     }
 }
 
