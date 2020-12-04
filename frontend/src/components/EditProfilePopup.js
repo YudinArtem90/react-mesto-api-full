@@ -1,6 +1,7 @@
 import React from 'react';
 import Popup from './Popup.js';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import * as yup from 'yup';
 
 function EditProfilePopup(props){
     const {isOpen, onClose} = props;
@@ -8,6 +9,37 @@ function EditProfilePopup(props){
 
     const nameRef = React.useRef();
     const descriptionRef = React.useRef();
+
+    const [ desabled, setDesabled ] = React.useState(true);
+    const [ namePerson , setNamePerson ] = React.useState(currentUser.name);
+    const [ informPerson, setInformPerson ] = React.useState(currentUser.about);
+    const [ highlighted, whoHighlighted] = React.useState('');
+
+    React.useEffect(() => {
+        if(highlighted === 'name_person'){
+            nameRef.current.focus();
+        }else{
+            descriptionRef.current.focus();
+        }
+    });
+
+    const validation = (event) => {
+        setNamePerson(nameRef.current.value);
+        setInformPerson(descriptionRef.current.value);
+        let schema = yup.object({
+            namePerson: yup.string().min(2).max(40).matches(/^[A-Za-zА-Яа-яЁё\s\-]+$/g).required(),
+            informPerson: yup.string().min(2).max(40).required(),
+          });
+
+        schema.validate({ namePerson: nameRef.current.value, informPerson: descriptionRef.current.value })
+        .then((e) => {
+            setDesabled(true);
+        })
+        .catch(function (err) {
+            setDesabled(false); 
+          });
+      }
+
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -32,6 +64,9 @@ function EditProfilePopup(props){
                     pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" 
                     ref={nameRef}
                     required 
+                    onChange={validation}
+                    onBlur={(e) => whoHighlighted('inform_person')}
+                    value={namePerson}
                 />
                 <span id="name_person-error" className="popup__field-error" />
                 <input 
@@ -44,6 +79,9 @@ function EditProfilePopup(props){
                     defaultValue={currentUser.about} 
                     ref={descriptionRef}
                     required 
+                    onChange={validation}
+                    onBlur={(e) => whoHighlighted('name_person')}
+                    value={informPerson}
                 />
                 <span id="inform_person-error" className="popup__field-error" />
             </>
@@ -52,6 +90,7 @@ function EditProfilePopup(props){
     
     return(
         <Popup
+            validation={desabled}
             onSubmit={handleSubmit}
             children={<PopupElementEditProfile/>}
             title='Редактировать профиль'
