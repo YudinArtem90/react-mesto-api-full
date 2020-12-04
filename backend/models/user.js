@@ -67,7 +67,7 @@ userSchema.pre('save', function (next) {
   }
 
   if (this.password.length < 8) {
-    next(new BadRequest('Переданный не корректные данные.'));
+    next(new BadRequest('Пароль не может быть менее 8 символов.'));
   }
 
   bcrypt.hash(this.password, 10)
