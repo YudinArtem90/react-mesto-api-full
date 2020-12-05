@@ -48,10 +48,15 @@ router.post('/signup', celebrate({
         'any.required': 'Пароль обязательное поле',
         'string.min': 'Пароль не должен быть меньше {#limit} символов',
       }),
+    about: Joi.string().trim().min(2).max(30)
+      .messages({
+        'string.min': 'Тема не должена быть меньше {#limit} символов',
+        'string.max': 'Тема не должена быть больше {#limit} символов',
+      }),
     name: Joi.string().trim().min(2).max(30)
       .messages({
-        'string.min': 'Пароль не должен быть меньше {#limit} символов',
-        'string.max': 'Пароль не должен быть больше {#limit} символов',
+        'string.min': 'Имя не должено быть меньше {#limit} символов',
+        'string.max': 'Имя не должено быть больше {#limit} символов',
       }),
     avatar: Joi.string().trim().pattern(new RegExp(regExpUrl)).messages({
       'string.pattern.name': 'Пароль не должен быть меньше {#limit} символов',
