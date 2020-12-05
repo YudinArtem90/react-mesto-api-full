@@ -3,16 +3,13 @@ const auth = require('../middlewares/auth');
 const { regExpUrl, regExpObjectId } = require('../helpers/constants/index');
 
 const router = express.Router();
-// eslint-disable-next-line import/order
-const path = require('path');
+
 const {
   getUsers, getUserId, addUser, updateProfile, updateAvatar, login, getUserMe,
 } = require('../controllers/users');
 
 // eslint-disable-next-line import/order
-const { celebrate, Joi, errors } = require('celebrate');
-
-const { BadRequest } = require('../helpers/errors');
+const { celebrate, Joi } = require('celebrate');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({

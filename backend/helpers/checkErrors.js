@@ -7,13 +7,13 @@ const checkErrors = (error, next) => {
 
   switch (error.name) {
     case 'ValidationError':
-      result = new BadRequest('Переданный не корректные данные.');
+      result = new BadRequest('Переданы некорректные данные.');
       break;
     case 'SomeErrorName':
-      result = new BadRequest('Переданный не корректные данные.');
+      result = new BadRequest('Переданы некорректные данные.');
       break;
     case 'CastError':
-      result = new BadRequest('Переданный не корректные данные.');
+      result = new BadRequest('Переданы некорректные данные.');
       break;
     case 'DocumentNotFoundError':
       result = new NotFoundError('Не найдено искомый объект в базе.');

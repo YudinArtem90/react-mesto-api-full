@@ -1,11 +1,9 @@
 const path = require('path');
 const Card = require('../models/card');
-const User = require('../models/user');
 const checkErrors = require('../helpers/checkErrors');
 
-const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 const { getData } = require(path.join(__dirname, '..', 'helpers', 'getData'));
-const { NotFoundError, Forbidden, BadRequest } = require('../helpers/errors');
+const { NotFoundError, Forbidden } = require('../helpers/errors');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -28,12 +26,15 @@ module.exports.deleteCard = (req, res, next) => {
 
   Card.findById({ _id: cardId })
     .orFail(() => new NotFoundError('Карточки нет в базе.'))
-    .then(() => {
+    .then((card) => {
+      if (card.owner !== userId) {
+        throw new Forbidden('Нельзя удалить данную карточку, так как она создана не Вами.');
+      }
+
       Card.findOneAndDelete({
         _id: cardId,
         owner: userId,
       })
-        .orFail(() => new Forbidden('Нельзя удалить данную карточку, так как она создана не Вами.'))
         .then(() => getData(res, { message: 'Карточка успешно удалена' }))
         .catch(next);
     })
